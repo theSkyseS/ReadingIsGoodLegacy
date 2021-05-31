@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Mutagen.Bethesda;
+using Mutagen.Bethesda.Plugins;
 
 namespace ReadingIsGoodLegacy
 {

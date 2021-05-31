@@ -4,6 +4,7 @@ using Mutagen.Bethesda;
 using Mutagen.Bethesda.Synthesis;
 using Mutagen.Bethesda.Skyrim;
 using System.Threading.Tasks;
+using Mutagen.Bethesda.Plugins;
 
 
 namespace ReadingIsGoodLegacy
@@ -41,16 +42,12 @@ namespace ReadingIsGoodLegacy
                 var bookGetter = context.Record;
                 var teaches = (BookSkill) bookGetter.Teaches!;
                 var skillId = (int) teaches.Skill! - 6;
-                if (skillId is >= 0 and <= 17)
-                {
-                    if (state.PatchMod.FormLists.TryGetOrAddAsOverride(plugin.FormLists[skillId], state.LinkCache,
-                        out var formList))
-                    {
-                        formList.Items.Add(bookGetter);
-                        Book book = state.PatchMod.Books.GetOrAddAsOverride(bookGetter);
-                        book.Teaches = new BookSkill();
-                    }
-                }
+                if (skillId is < 0 or > 17) continue;
+                if (!state.PatchMod.FormLists.TryGetOrAddAsOverride(plugin.FormLists[skillId], state.LinkCache,
+                    out var formList)) continue;
+                formList.Items.Add(bookGetter);
+                Book book = state.PatchMod.Books.GetOrAddAsOverride(bookGetter);
+                book.Teaches = new BookSkill();
             }
         }
     }
